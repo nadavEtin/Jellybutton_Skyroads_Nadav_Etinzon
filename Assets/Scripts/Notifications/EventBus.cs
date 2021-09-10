@@ -3,19 +3,19 @@ using System.Collections.Generic;
 
 public class EventBus : NativeSingleton<EventBus>
 {
-    private Dictionary<GameplayEventType, List<Action<EventParams>>> _subscription = new Dictionary<GameplayEventType, List<Action<EventParams>>>();
+    private Dictionary<GameplayEventType, List<Action<BaseEventParams>>> _subscription = new Dictionary<GameplayEventType, List<Action<BaseEventParams>>>();
 
-    public void Subscribe(GameplayEventType eventType, Action<EventParams> handler)
+    public void Subscribe(GameplayEventType eventType, Action<BaseEventParams> handler)
     {
         if(!_subscription.ContainsKey(eventType))
         {
-            _subscription.Add(eventType, new List<Action<EventParams>>());
+            _subscription.Add(eventType, new List<Action<BaseEventParams>>());
         }
 
         _subscription[eventType].Add(handler);
     }
 
-    public void Unsubscribe(GameplayEventType eventType, Action<EventParams> handler)
+    public void Unsubscribe(GameplayEventType eventType, Action<BaseEventParams> handler)
     {
         if (!_subscription.ContainsKey(eventType))
         {
@@ -26,7 +26,7 @@ public class EventBus : NativeSingleton<EventBus>
         handlesList.Remove(handler);
     }
 
-    public void Publish(GameplayEventType eventType, EventParams eventParams)
+    public void Publish(GameplayEventType eventType, BaseEventParams eventParams)
     {
         if (!_subscription.ContainsKey(eventType))
         {

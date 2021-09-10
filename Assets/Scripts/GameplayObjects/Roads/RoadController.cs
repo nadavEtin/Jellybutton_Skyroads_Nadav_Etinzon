@@ -14,9 +14,10 @@ public class RoadController : MonoBehaviour
     //TODO: seperate road movement to new class
 
     private bool _shouldMove;
+    private bool _obstaclesAreAttached;
     private int _curRoadStep = 0, _lastRoadStep = 0;
     private float _roadPieceLength = 0;
-    private List<BaseRoad> _activeRoadObj = new List<BaseRoad>();
+    private List<BaseRoad> _activeRoadObjects = new List<BaseRoad>();
     private Vector3 _moveDir = Vector3.back;
 
     #endregion
@@ -45,9 +46,9 @@ public class RoadController : MonoBehaviour
 
     private void MoveRoad()
     {
-        for (int i = 0; i < _activeRoadObj.Count; i++)
+        for (int i = 0; i < _activeRoadObjects.Count; i++)
         {
-            _activeRoadObj[i].transform.position += _moveDir * _moveSpeed * Time.fixedDeltaTime;
+            _activeRoadObjects[i].transform.position += _moveDir * _moveSpeed * Time.fixedDeltaTime;
         }
 
         RoadPullCheck();
@@ -55,30 +56,36 @@ public class RoadController : MonoBehaviour
 
     private void RoadPullCheck()
     {
-        _curRoadStep = (int)(_activeRoadObj[0].transform.position.z / _roadPieceLength);
+        _curRoadStep = (int)(_activeRoadObjects[0].transform.position.z / _roadPieceLength);
         if (_curRoadStep != _lastRoadStep)
         {
             PullRoadPiece();
-            var road = AddNewRoadPiece();
-            PositionRoadPiece(road, new Vector3(0, 0, _activeRoadObj[_activeRoadObj.Count - 2].transform.position.z + _roadPieceLength));
+            var newRoad = AddNewRoadPiece();
+            PositionRoadPiece(newRoad, new Vector3(0, 0, _activeRoadObjects[_activeRoadObjects.Count - 2].transform.position.z + _roadPieceLength));
         }
     }
 
     private void PullRoadPiece()
     {
-        GameplayElements.Instance.SendObjectToPool(_activeRoadObj[0].GetComponent<BaseRoad>());
-        _activeRoadObj.RemoveAt(0);
+        GameplayElements.Instance.GameplayObjectPool.AddObjectToPool(_activeRoadObjects[0].GetComponent<BaseRoad>());
+        if (_activeRoadObjects[0].HasObstacle)
+        {
+            GameplayElements.Instance.RoadPulled(_activeRoadObjects[0].HasObstacle);
+            _activeRoadObjects[0].ObstacleRemoved();
+        }
+            
+        _activeRoadObjects.RemoveAt(0);
+        
     }
 
     private GameObject AddNewRoadPiece()
     {
-        GameObject newRoad = GameplayElements.Instance.GetGameplayObject(PooledObjectType.Road);
-        newRoad.SetActive(true);
-        _activeRoadObj.Add(newRoad.GetComponent<BaseRoad>());
+        GameObject newRoad = GameplayElements.Instance.GameplayObjectPool.GetObjectFromPool(PooledObjectType.Road);
+        _activeRoadObjects.Add(newRoad.GetComponent<BaseRoad>());
         if (_roadPieceLength == 0)
         {
             _roadPieceLength = newRoad.transform.localScale.z;
-            GameplayElements.Instance.RoadPieceSize = newRoad.transform.localScale;
+            GameplayElements.Instance.RoadPieceSize = newRoad.GetComponent<BoxCollider>().bounds;
         }  
 
         return newRoad;
@@ -87,7 +94,7 @@ public class RoadController : MonoBehaviour
     private void PositionRoadPiece(GameObject road, Vector3 pos = default)
     {
         if (pos == default)
-            road.transform.localPosition = new Vector3(0, 0, _activeRoadObj.Count * _roadPieceLength);
+            road.transform.localPosition = new Vector3(0, 0, _activeRoadObjects.Count * _roadPieceLength);
         else
             road.transform.localPosition = pos;
     }
@@ -102,7 +109,15 @@ public class RoadController : MonoBehaviour
         }  
     }
 
-    private void GameStart(EventParams par)
+    public void AddObstacleToRoad(GameObject obstacle, int index, Vector3 obsPos)
+    {
+        //_obstaclesAreAttached = true;
+        //obstacle.transform.SetParent(_activeRoadObjects[index].transform);
+        _activeRoadObjects[index].AddObstacle(obstacle);
+        obstacle.transform.localPosition = obsPos;
+    }
+
+    private void GameStart(BaseEventParams par)
     {
         _shouldMove = true;
     }

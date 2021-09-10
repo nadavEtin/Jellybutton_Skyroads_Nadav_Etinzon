@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EventParams
+public abstract class BaseEventParams
 {
     private static EmptyParams _empty = new EmptyParams();
 

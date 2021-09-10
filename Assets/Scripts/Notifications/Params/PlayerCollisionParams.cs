@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCollisionParams : EventParams
+public class PlayerCollisionParams : BaseEventParams
 {
     
 }

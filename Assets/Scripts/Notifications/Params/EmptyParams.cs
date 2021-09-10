@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EmptyParams : EventParams
+public class EmptyParams : BaseEventParams
 {
 
 }

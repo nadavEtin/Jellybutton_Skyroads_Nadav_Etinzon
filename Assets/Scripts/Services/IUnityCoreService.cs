@@ -1,4 +1,4 @@
 ﻿public interface IUnityCoreService
 {
-    void RegisterToUpdate(IUpdatable method);
+    void RegisterToUpdate(IUpdate method);
 }

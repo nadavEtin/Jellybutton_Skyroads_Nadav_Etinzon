@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InputManager : IUpdatable
+public class InputManager : IUpdate
 {
     Vector3 direction;
 

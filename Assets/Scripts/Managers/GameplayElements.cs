@@ -22,10 +22,10 @@ public class GameplayElements : MonoSingleton<GameplayElements>
     #region Properties
 
     public IPlayer PlayerShip => _playerShip;
-
+    public IObjectPool GameplayObjectPool => _gop;
     //public GameObject RoadsContainer => _roadContainer;
     [HideInInspector]
-    public Vector3 RoadPieceSize;
+    public Bounds RoadPieceSize;
 
     //TODO: remove this and sent the number in the eventParams of the event
     public int RoadLength => _roadLength;
@@ -40,16 +40,6 @@ public class GameplayElements : MonoSingleton<GameplayElements>
         _gop = new GameplayObjectPool();
     }
 
-    public GameObject GetGameplayObject(PooledObjectType type)
-    {
-        return _gop.GetObjectFromPool(type);
-    }
-
-    public void SendObjectToPool(IPooledObject obj)
-    {
-        _gop.AddObjectToPool(obj);
-    }
-
     //TODO: move this to roadcontroller anf subscribe it to an event once the event bus exists
     public void CreateLevelRoad()
     {
@@ -61,9 +51,14 @@ public class GameplayElements : MonoSingleton<GameplayElements>
         _obstacleController.CreateLevelObstacles();
     }
 
-    public void AddObstacleToRoad(GameObject obstacle, int roadPiece)
+    public void AddObstacleToRoad(GameObject obstacle, int roadPiece, Vector3 pos)
     {
+        _roadController.AddObstacleToRoad(obstacle, roadPiece, pos);
+    }
 
+    public void RoadPulled(bool hadObstacle)
+    {
+        _obstacleController.RoadPulled(hadObstacle);
     }
 
     protected override GameplayElements ProvideInstance()

@@ -1,4 +1,4 @@
-﻿public class GameStartParams : EventParams
+﻿public class GameStartParams : BaseEventParams
 {
     
 }

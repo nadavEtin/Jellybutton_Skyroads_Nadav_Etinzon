@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameLoopManager : MonoBehaviour
+public class GameLoopManager : IStart
 {
     #region Editor
 
@@ -24,10 +24,11 @@ public class GameLoopManager : MonoBehaviour
 
     #region Methods
 
-    void Start()
+    public void Start()
     {
         GameplayElements.Instance.CreateLevelRoad();
-        EventBus.Instance.Publish(GameplayEventType.StartGame, EventParams.Empty);
+        GameplayElements.Instance.CreateObstacles();
+        EventBus.Instance.Publish(GameplayEventType.StartGame, BaseEventParams.Empty);
     }
 
     #endregion

@@ -38,18 +38,18 @@ public class PlayerShip : MonoBehaviour, IPlayer
 
     private void OnCollisionEnter(Collision collision)
     {
-
+        Debug.Log("boom");
     }
 
     #endregion
 
     #region Methods
 
-    private void StartGame(EventParams par)
+    private void StartGame(BaseEventParams par)
     {
         var roadWidth = GameplayElements.Instance.RoadPieceSize;
-        _leftRoadEdge = roadWidth.x * -0.45f;
-        _rightRoadEdge = roadWidth.x * 0.45f;
+        _leftRoadEdge = roadWidth.min.x * 0.9f;
+        _rightRoadEdge = roadWidth.max.x * 0.9f;
     }
 
     public void GetMovementInput(Vector3 direction)
@@ -60,7 +60,7 @@ public class PlayerShip : MonoBehaviour, IPlayer
     private void MovePlayer()
     {
         //move player ship and prevent it from leaving road boundaries
-        var xMovement = Mathf.Clamp(_movementTransform.localPosition.x + (_movementDir * _moveSpeed * Time.deltaTime).x, _leftRoadEdge, _rightRoadEdge);
+        var xMovement = Mathf.Clamp(_movementTransform.localPosition.x + (_movementDir * _moveSpeed * Time.fixedDeltaTime).x, _leftRoadEdge, _rightRoadEdge);
         _movementTransform.localPosition = new Vector3(xMovement, _movementTransform.localPosition.y, _movementTransform.localPosition.z);
 
         //rotate the ship towards movement direction or to the reset position

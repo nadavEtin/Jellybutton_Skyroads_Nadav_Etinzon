@@ -42,7 +42,6 @@ public class GameplayObjectPool : IObjectPool
                 break;
 
             case PooledObjectType.Obstacle:
-                _inActiveObstaclesOP.Dequeue();
                 _inActiveObstaclesOP.Enqueue(obj.GetGameObject().GetComponent<BaseObstacle>());
                 break;
 
@@ -62,6 +61,7 @@ public class GameplayObjectPool : IObjectPool
                 if (_inActiveRoadsOP.Count > 0)
                 {
                     var road = _inActiveRoadsOP.Dequeue();
+                    road.gameObject.SetActive(true);
                     return road.gameObject;
                 } 
                 else
@@ -75,6 +75,7 @@ public class GameplayObjectPool : IObjectPool
                 if (_inActiveObstaclesOP.Count > 0)
                 {
                     var obstacle = _inActiveObstaclesOP.Dequeue();
+                    obstacle.gameObject.SetActive(true);
                     return obstacle.gameObject;
                 } 
                 else
