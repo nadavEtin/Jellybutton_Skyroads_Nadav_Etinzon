@@ -6,7 +6,7 @@ public class AsteroidFactory : ObstacleBaseFactory
 {
     #region Constants
 
-    private const string OBSTACLES_RESOURCE_NAME = "ScriptableObjects/Obstacle Params";
+    private const string OBSTACLES_RESOURCE_NAME = "ScriptableObjects/ObstacleParams";
 
     #endregion
 

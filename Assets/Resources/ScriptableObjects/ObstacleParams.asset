@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: af0a8f11f55ab104cbbe487ca333f28c, type: 3}
-  m_Name: Obstacle Params
+  m_Name: ObstacleParams
   m_EditorClassIdentifier: 
   _asteroidPrefab: {fileID: 6936683938805196517, guid: a845eabe0a650d44c9ef036989c58408,
     type: 3}

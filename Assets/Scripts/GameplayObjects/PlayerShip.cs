@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerShip : MonoBehaviour, IPlayer
 {
+    private const string OBSTACLE_TAG = "Obstacle";
+
     #region Editor Fields
 
     [Range(0f, 90f)]
@@ -38,12 +40,19 @@ public class PlayerShip : MonoBehaviour, IPlayer
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log("boom");
+        if (collision.gameObject.tag == OBSTACLE_TAG)
+            GameOver();
     }
 
     #endregion
 
     #region Methods
+
+    private void GameOver()
+    {
+        EventBus.Instance.Publish(GameplayEventType.GameOver, BaseEventParams.Empty);
+        gameObject.SetActive(false);
+    }
 
     private void StartGame(BaseEventParams par)
     {

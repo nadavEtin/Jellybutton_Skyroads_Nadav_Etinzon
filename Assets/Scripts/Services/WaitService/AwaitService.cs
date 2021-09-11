@@ -16,7 +16,7 @@ public class AwaitService : MonoBehaviour, IWaitService
         sr.ReportStart();
         for (int i = 0; i < waitDelay; i++)
         {
-            yield return new WaitForSeconds(waitDelay);
+            yield return new WaitForSeconds(1);
             sr.ReportProgress();
         }
         sr.ReportDone();

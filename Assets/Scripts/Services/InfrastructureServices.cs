@@ -15,8 +15,6 @@ public static class InfrastructureServices
     #region Managers
 
     private static InputManager _inputMan;
-    //TODO: make gameloop into an instance again
-    private static GameLoopManager _gameLoopMan;
 
     #endregion
 
@@ -36,30 +34,25 @@ public static class InfrastructureServices
         _coroutineService = CreateCoroutineService();
         _unityCoreService = CreateUnityCore();
         _inputMan = new InputManager();
-        _gameLoopMan = new GameLoopManager();
         _unityCoreService.RegisterToUpdate(_inputMan);
-        _unityCoreService.RegisterToStart(_gameLoopMan);
 
     }
 
     private static UnityCoreService CreateUnityCore()
     {
         var go = new GameObject("UnityCoreService");
-        Object.DontDestroyOnLoad(go);
         return go.AddComponent<UnityCoreService>();
     }
 
     private static AwaitService CreateAwaitService()
     {
         var _as = new GameObject("AwaitService");
-        Object.DontDestroyOnLoad(_as);
         return _as.AddComponent<AwaitService>();
     }
 
     private static CoroutineService CreateCoroutineService()
     {
         var _crs = new GameObject("CoroutineService");
-        Object.DontDestroyOnLoad(_crs);
         return _crs.AddComponent<CoroutineService>();
     }
 

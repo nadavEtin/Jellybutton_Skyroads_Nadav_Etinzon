@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class AsteroidObstacle : BaseObstacle
+﻿public class AsteroidObstacle : BaseObstacle
 {
     private void Awake()
     {

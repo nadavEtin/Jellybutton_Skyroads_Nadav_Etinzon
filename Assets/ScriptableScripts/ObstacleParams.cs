@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Gameplay/Obstacle Params", fileName = "Obstacle Params")]
+[CreateAssetMenu(menuName = "Gameplay/ObstacleParams", fileName = "ObstacleParams")]
 public class ObstacleParams : ScriptableObject
 {
     [SerializeField] private Object _asteroidPrefab;

@@ -7,27 +7,44 @@ public class ObstacleController : MonoBehaviour
     #region Editor
 
     [Range(0, 100)]
-    [SerializeField] private float _obstacleProbability = 15;
-    [SerializeField] private float _obstacleHeight = 0.35f;
+    [SerializeField] private int _obstacleProbability = 15;
+    [SerializeField] private int _spawnRateDifficultyIncrease = 4;
+    [SerializeField] private float _obstacleHeight = 3f;
+    [SerializeField] private float _obstacleSpawnZone = 0.35f;
 
     #endregion
 
     #region Private Variables
 
-    private List<BaseObstacle> _activeObstacleObjects = new List<BaseObstacle>();
-    //private Vector3 _obstacleSpawnZone;
+    private readonly List<BaseObstacle> _activeObstacleObjects = new List<BaseObstacle>();
     private float _spawnZoneMinX, _spawnZoneMaxX, _spawnZoneMinZ, _spawnZoneMaxZ;
     private int _lastRoadIndex;
 
     #endregion
 
+    #region Unity Methods
+
+    private void Awake()
+    {
+        EventBus.Instance.Subscribe(GameplayEventType.IncreaseDifficulty, DifficultyIncrease);
+    }
+
+    private void OnDestroy()
+    {
+        EventBus.Instance.Unsubscribe(GameplayEventType.IncreaseDifficulty, DifficultyIncrease);
+    }
+
+    #endregion
+
     #region Methods
 
+    //randomly add obstacles on level creation
     public void CreateLevelObstacles()
     {
         InitializeVariables();
 
-        for (int i = 0; i < GameplayElements.Instance.RoadLength; i++)
+        //start from the 3rd road piece to prevent unwinnable levels
+        for (int i = 2; i < GameplayElements.Instance.RoadLength; i++)
         {
             var newObs = RandomizeNewObstacle();
             if(newObs != null)
@@ -42,6 +59,7 @@ public class ObstacleController : MonoBehaviour
     {
         GameplayElements.Instance.GameplayObjectPool.AddObjectToPool(_activeObstacleObjects[0].GetComponent<BaseObstacle>());
         _activeObstacleObjects.RemoveAt(0);
+        GameLoopManager.Instance.ScoreManager.UpdateObstaclesPassed(1);
     }
 
     public void RoadPulled(bool hadObstacle)
@@ -58,7 +76,6 @@ public class ObstacleController : MonoBehaviour
 
     private void InitializeVariables()
     {
-        //_obstacleSpawnZone = GameplayElements.Instance.RoadPieceSize;
         _spawnZoneMinX = GameplayElements.Instance.RoadPieceSize.min.x;
         _spawnZoneMaxX = GameplayElements.Instance.RoadPieceSize.max.x;
         _spawnZoneMinZ = GameplayElements.Instance.RoadPieceSize.min.z;
@@ -77,8 +94,8 @@ public class ObstacleController : MonoBehaviour
 
     private Vector3 RandomPositionOnRoad()
     {
-        var xPos = Random.Range(_spawnZoneMinX * 0.35f, _spawnZoneMaxX * 0.35f);
-        var zPos = Random.Range(_spawnZoneMinZ * 0.35f, _spawnZoneMaxZ * 0.35f);
+        var xPos = Random.Range(_spawnZoneMinX * _obstacleSpawnZone, _spawnZoneMaxX * _obstacleSpawnZone);
+        var zPos = Random.Range(_spawnZoneMinZ * _obstacleSpawnZone, _spawnZoneMaxZ * _obstacleSpawnZone);
         return new Vector3(xPos, _obstacleHeight, zPos);
     }
 
@@ -89,16 +106,10 @@ public class ObstacleController : MonoBehaviour
         return newObs;
     }
 
-
-
-    #endregion
-
-    #region Unity Methods
-
-
-    #endregion
-
-    #region
+    private void DifficultyIncrease(BaseEventParams par)
+    {
+        _obstacleProbability += _spawnRateDifficultyIncrease;
+    }
 
     #endregion
 }

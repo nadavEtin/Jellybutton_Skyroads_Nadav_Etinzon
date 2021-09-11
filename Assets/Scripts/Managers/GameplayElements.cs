@@ -23,11 +23,8 @@ public class GameplayElements : MonoSingleton<GameplayElements>
 
     public IPlayer PlayerShip => _playerShip;
     public IObjectPool GameplayObjectPool => _gop;
-    //public GameObject RoadsContainer => _roadContainer;
     [HideInInspector]
     public Bounds RoadPieceSize;
-
-    //TODO: remove this and sent the number in the eventParams of the event
     public int RoadLength => _roadLength;
 
     #endregion
@@ -40,7 +37,6 @@ public class GameplayElements : MonoSingleton<GameplayElements>
         _gop = new GameplayObjectPool();
     }
 
-    //TODO: move this to roadcontroller anf subscribe it to an event once the event bus exists
     public void CreateLevelRoad()
     {
         _roadController.CreateLevelRoad();

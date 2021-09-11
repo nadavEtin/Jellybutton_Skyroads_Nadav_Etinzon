@@ -10,9 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f780aab7098098640b4ec1196123d58e, type: 3}
-  m_Name: Road Params
+  m_Name: RoadParams
   m_EditorClassIdentifier: 
   _roadPrefab: {fileID: 4759342479168504980, guid: 80b3568bfaa5d98428a64467196400b1,
-    type: 3}
-  _multiRoadPrefab: {fileID: 6445152614885559240, guid: 8b9af7b05bb5070478e4a2f972850103,
     type: 3}

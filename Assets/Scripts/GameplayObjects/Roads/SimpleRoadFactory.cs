@@ -6,7 +6,7 @@ public class SimpleRoadFactory : RoadBaseFactory
 {
     #region Constants
 
-    private const string ROADS_RESOURCE_NAME = "ScriptableObjects/Road Params";
+    private const string ROADS_RESOURCE_NAME = "ScriptableObjects/RoadParams";
 
     #endregion
 

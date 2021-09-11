@@ -66,8 +66,8 @@ public class GameplayObjectPool : IObjectPool
                 } 
                 else
                 {
-                    var sinmpleRoad = (SimpleRoad)_simpleRoadFactory.Create();
-                    return sinmpleRoad.GetGameObject();
+                    var simpleRoad = (SimpleRoad)_simpleRoadFactory.Create();
+                    return simpleRoad.GetGameObject();
                 }
                     
 
