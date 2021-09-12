@@ -3,13 +3,13 @@ using UnityEngine;
 
 public abstract class MonoSingleton<T> : MonoBehaviour
 {
-    #region fields
+    #region Private Fields
 
     private static T _instance;
 
     #endregion
 
-    #region properties
+    #region Public Properties
 
     public static T Instance
     {

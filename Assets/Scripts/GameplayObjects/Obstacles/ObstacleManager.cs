@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleController : MonoBehaviour
+public class ObstacleManager : MonoBehaviour
 {
     #region Editor
 
@@ -26,12 +26,12 @@ public class ObstacleController : MonoBehaviour
 
     private void Awake()
     {
-        EventBus.Instance.Subscribe(GameplayEventType.IncreaseDifficulty, DifficultyIncrease);
+        EventBus.Instance.Subscribe(GameplayEventType.IncreaseDifficulty, DifficultyIncreaseOM);
     }
 
     private void OnDestroy()
     {
-        EventBus.Instance.Unsubscribe(GameplayEventType.IncreaseDifficulty, DifficultyIncrease);
+        EventBus.Instance.Unsubscribe(GameplayEventType.IncreaseDifficulty, DifficultyIncreaseOM);
     }
 
     #endregion
@@ -55,13 +55,17 @@ public class ObstacleController : MonoBehaviour
         }
     }
 
+    //remove obstacle from game and store it in its object pool
     public void PullObstacle()
     {
-        GameplayElements.Instance.GameplayObjectPool.AddObjectToPool(_activeObstacleObjects[0].GetComponent<BaseObstacle>());
+        GameplayElements.Instance.GameplayObjectPool.AddObjectToPool(_activeObstacleObjects[0].GetComponent<BaseObstacle>().ObjectType, _activeObstacleObjects[0].gameObject);
         _activeObstacleObjects.RemoveAt(0);
+
+        //reward points for passing an obstacle
         GameLoopManager.Instance.ScoreManager.UpdateObstaclesPassed(1);
     }
 
+    //called after a road was pulled
     public void RoadPulled(bool hadObstacle)
     {
         if(hadObstacle)
@@ -85,6 +89,7 @@ public class ObstacleController : MonoBehaviour
 
     private GameObject RandomizeNewObstacle()
     {
+        //randomly add new obstacle to level according to the current probability, determined by game difficulty
         var rnd = Random.Range(0, 100);
         if (rnd <= _obstacleProbability)
             return AddNewObstacle();
@@ -92,6 +97,7 @@ public class ObstacleController : MonoBehaviour
             return null;
     }
 
+    //position the obstacle randomly inside predefined zone on the road piece
     private Vector3 RandomPositionOnRoad()
     {
         var xPos = Random.Range(_spawnZoneMinX * _obstacleSpawnZone, _spawnZoneMaxX * _obstacleSpawnZone);
@@ -101,12 +107,12 @@ public class ObstacleController : MonoBehaviour
 
     private GameObject AddNewObstacle()
     {
-        var newObs = GameplayElements.Instance.GameplayObjectPool.GetObjectFromPool(PooledObjectType.Obstacle);
+        var newObs = GameplayElements.Instance.GameplayObjectPool.GetObjectFromPool(GameplayObjectType.Obstacle);
         _activeObstacleObjects.Add(newObs.GetComponent<BaseObstacle>());
         return newObs;
     }
 
-    private void DifficultyIncrease(BaseEventParams par)
+    private void DifficultyIncreaseOM(BaseEventParams par)
     {
         _obstacleProbability += _spawnRateDifficultyIncrease;
     }

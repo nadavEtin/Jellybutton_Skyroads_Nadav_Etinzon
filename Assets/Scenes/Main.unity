@@ -683,14 +683,16 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 649172879}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.47886407, y: 2.9432175, z: 56.966236}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 364211249}
   - {fileID: 379595794}
   - {fileID: 565477857}
+  - {fileID: 1993488785}
+  - {fileID: 1871273882}
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &803662849
 GameObject:
@@ -756,7 +758,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &882403732
 GameObject:
@@ -1778,7 +1780,7 @@ GameObject:
   - component: {fileID: 1871273882}
   - component: {fileID: 1871273881}
   m_Layer: 0
-  m_Name: ObstacleController
+  m_Name: ObstacleManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1807,12 +1809,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1871273880}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_Father: {fileID: 649172880}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1993488783
 GameObject:
@@ -1824,8 +1826,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1993488785}
   - component: {fileID: 1993488784}
+  - component: {fileID: 1993488786}
   m_Layer: 0
-  m_Name: RoadController
+  m_Name: RoadManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1843,9 +1846,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c06d2cba4763cc4eb42eba768c85cd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedUpOnDiffIncrease: 1
-  _moveSpeed: 4
-  _boostSpeedMultiplier: 2
+  _roadMoveController: {fileID: 1993488786}
 --- !u!4 &1993488785
 Transform:
   m_ObjectHideFlags: 0
@@ -1853,13 +1854,29 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1993488783}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_Father: {fileID: 649172880}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1993488786
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1993488783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2055a9dffb1ccd3409fa579b9b77fc69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 5
+  _speedUpOnDiffIncrease: 1
+  _boostSpeedMultiplier: 2
+  _roadManager: {fileID: 1993488784}
 --- !u!1 &2147205850
 GameObject:
   m_ObjectHideFlags: 0

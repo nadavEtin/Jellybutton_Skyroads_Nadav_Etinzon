@@ -2,25 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseObstacle : MonoBehaviour, IPooledObject, IObstacle
+public class BaseObstacle : MonoBehaviour
 {
-    #region Fields
+    #region Private Fields
 
-    protected PooledObjectType _type;
-
-    #endregion
-
-    #region Properties
-
-    public PooledObjectType Type => _type;
+    protected GameplayObjectType _type;
 
     #endregion
 
-    #region Methods
+    #region Public Properties
 
-    public GameObject GetGameObject()
+    public GameplayObjectType ObjectType => _type;
+
+    #endregion
+
+    #region Unity Methods
+
+    protected virtual void Awake()
     {
-        return gameObject;
+        _type = GameplayObjectType.Obstacle;
     }
 
     #endregion

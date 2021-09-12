@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AsteroidFactory : ObstacleBaseFactory
+public class AsteroidFactory : GameObjectBaseFactory
 {
     #region Constants
 
@@ -10,7 +10,7 @@ public class AsteroidFactory : ObstacleBaseFactory
 
     #endregion
 
-    #region Fields
+    #region Private Fields
 
     private ObstacleParams _obstacleParams;
 
@@ -23,10 +23,10 @@ public class AsteroidFactory : ObstacleBaseFactory
         _obstacleParams = Resources.Load<ObstacleParams>(OBSTACLES_RESOURCE_NAME);
     }
 
-    public override IObstacle Create()
+    public override GameObject Create()
     {
         var asteroid = (GameObject)Object.Instantiate(_obstacleParams.AsteroidPrefab);
-        return asteroid.GetComponent<AsteroidObstacle>();
+        return asteroid;
     }
 
     #endregion

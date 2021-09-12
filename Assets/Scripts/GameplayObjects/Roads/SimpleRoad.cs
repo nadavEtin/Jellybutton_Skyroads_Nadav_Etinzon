@@ -4,12 +4,5 @@ using UnityEngine;
 
 public class SimpleRoad : BaseRoad
 {
-    #region Methods
-
-    private void Awake()
-    {
-        _type = PooledObjectType.Road;
-    }
-
-    #endregion
+    //child class prepared for specific code of simpleRoad in the future
 }

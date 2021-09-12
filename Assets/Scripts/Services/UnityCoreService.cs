@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class UnityCoreService : MonoBehaviour, IUnityCoreService
 {
+    //gives non-mono classes access to unity lifecycle events
     private readonly List<IUpdate> _updatables = new List<IUpdate>();
     private readonly List<IStart> _startables = new List<IStart>();
 

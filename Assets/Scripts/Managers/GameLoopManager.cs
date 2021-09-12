@@ -24,6 +24,7 @@ public class GameLoopManager : NativeSingleton<GameLoopManager>, IStart
 
     public void BoostClicked()
     {
+        //launch boost clicked event
         _boostIsOn = !_boostIsOn;
         EventBus.Instance.Publish(GameplayEventType.BoostClicked, new BoostParams(_boostIsOn));
     }

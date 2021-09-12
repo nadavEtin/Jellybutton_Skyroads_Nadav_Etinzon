@@ -5,6 +5,8 @@ public class AwaitService : MonoBehaviour, IWaitService
 {
     public IAwaiter WaitFor(int waitDelay)
     {
+        //create awaiter to track process start, progress and end
+        //send awaiter refrence back to caller to track status
         var sr = new StatusReporter();
         InfrastructureServices.CoroutineService.RunCoroutine(WaitForInternal(waitDelay, sr));
         return sr;

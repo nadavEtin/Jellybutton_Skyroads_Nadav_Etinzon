@@ -2,36 +2,37 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaseRoad : MonoBehaviour, IPooledObject, IRoad
+public class BaseRoad : MonoBehaviour, IRoad
 {
-    #region Fields
+    #region Private Fields
 
-    protected PooledObjectType _type;
+    protected GameplayObjectType _type;
     protected bool _hasObstacle;
 
     #endregion
 
-    #region Properties
+    #region Public Properties
 
-    public PooledObjectType Type => _type;
+    public GameplayObjectType ObjectType => _type;
     public bool HasObstacle => _hasObstacle;
 
     #endregion
 
     #region Methods
 
-    public GameObject GetGameObject()
+    protected virtual void Awake()
     {
-        return gameObject;
+        _type = GameplayObjectType.Road;
     }
 
-    public void AddObstacle(GameObject obstacle)
+    //adds an obstacle as a chile of this road
+    public virtual void AddObstacle(GameObject obstacle)
     {
         obstacle.transform.SetParent(transform);
         _hasObstacle = true;
     }
 
-    public void ObstacleRemoved()
+    public virtual void ObstacleRemoved()
     {
         _hasObstacle = false;
     }

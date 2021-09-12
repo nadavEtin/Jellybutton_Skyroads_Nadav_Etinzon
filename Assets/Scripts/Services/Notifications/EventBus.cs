@@ -12,7 +12,8 @@ public class EventBus : NativeSingleton<EventBus>
             _subscription.Add(eventType, new List<Action<BaseEventParams>>());
         }
 
-        _subscription[eventType].Add(handler);
+        if(!_subscription[eventType].Contains(handler))
+            _subscription[eventType].Add(handler);
     }
 
     public void Unsubscribe(GameplayEventType eventType, Action<BaseEventParams> handler)

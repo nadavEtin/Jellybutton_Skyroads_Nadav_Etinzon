@@ -2,19 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameplayObjectPool : IObjectPool
+public class GameplayObjectPool : IGameObjectPool
 {
-    #region Constants
-
-
-
-    #endregion
-
     #region Objects Pools
 
-    //TODO: change from gameobject to relevant interface
     private Queue<BaseRoad> _inActiveRoadsOP = new Queue<BaseRoad>();
-
     private Queue<BaseObstacle> _inActiveObstaclesOP = new Queue<BaseObstacle>();
 
     #endregion
@@ -26,23 +18,19 @@ public class GameplayObjectPool : IObjectPool
 
     #endregion
 
-    #region Public Properties
-
-
-    #endregion
-
     #region Methods
 
-    public void AddObjectToPool(IPooledObject obj)
+    //store an inactive gameObject in the appropriate object pool
+    public void AddObjectToPool(GameplayObjectType type, GameObject obj)
     {
-        switch (obj.Type)
+        switch (type)
         {
-            case PooledObjectType.Road:
-                _inActiveRoadsOP.Enqueue(obj.GetGameObject().GetComponent<BaseRoad>());
+            case GameplayObjectType.Road:
+                _inActiveRoadsOP.Enqueue(obj.GetComponent<BaseRoad>());
                 break;
 
-            case PooledObjectType.Obstacle:
-                _inActiveObstaclesOP.Enqueue(obj.GetGameObject().GetComponent<BaseObstacle>());
+            case GameplayObjectType.Obstacle:
+                _inActiveObstaclesOP.Enqueue(obj.GetComponent<BaseObstacle>());
                 break;
 
             default:
@@ -50,14 +38,15 @@ public class GameplayObjectPool : IObjectPool
                 break;
         }
 
-        obj.GetGameObject().SetActive(false);
+        obj.SetActive(false);
     }
 
-    public GameObject GetObjectFromPool(PooledObjectType type)
+    //return an inactive object if one exists, create new one if not
+    public GameObject GetObjectFromPool(GameplayObjectType type)
     {
         switch (type)
         {
-            case PooledObjectType.Road:
+            case GameplayObjectType.Road:
                 if (_inActiveRoadsOP.Count > 0)
                 {
                     var road = _inActiveRoadsOP.Dequeue();
@@ -66,12 +55,12 @@ public class GameplayObjectPool : IObjectPool
                 } 
                 else
                 {
-                    var simpleRoad = (SimpleRoad)_simpleRoadFactory.Create();
-                    return simpleRoad.GetGameObject();
+                    var simpleRoad = _simpleRoadFactory.Create();
+                    return simpleRoad;
                 }
                     
 
-            case PooledObjectType.Obstacle:
+            case GameplayObjectType.Obstacle:
                 if (_inActiveObstaclesOP.Count > 0)
                 {
                     var obstacle = _inActiveObstaclesOP.Dequeue();
@@ -80,8 +69,8 @@ public class GameplayObjectPool : IObjectPool
                 } 
                 else
                 {
-                    var asteroid = (AsteroidObstacle)_asteroidFactory.Create();
-                    return asteroid.GetGameObject();
+                    var asteroid = _asteroidFactory.Create();
+                    return asteroid;
                 }
 
             default:

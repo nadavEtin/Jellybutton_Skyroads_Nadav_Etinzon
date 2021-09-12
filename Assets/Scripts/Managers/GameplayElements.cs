@@ -7,22 +7,22 @@ public class GameplayElements : MonoSingleton<GameplayElements>
     #region Editor
 
     [SerializeField] private PlayerShip _playerShip;
-    [SerializeField] private RoadController _roadController;
-    [SerializeField] private ObstacleController _obstacleController;
+    [SerializeField] private RoadManager _roadController;
+    [SerializeField] private ObstacleManager _obstacleController;
     [SerializeField] private int _roadLength;
 
     #endregion
 
-    #region Fields
+    #region Private Fields
 
     private GameplayObjectPool _gop;
 
     #endregion
 
-    #region Properties
+    #region Public Properties
 
     public IPlayer PlayerShip => _playerShip;
-    public IObjectPool GameplayObjectPool => _gop;
+    public IGameObjectPool GameplayObjectPool => _gop;
     [HideInInspector]
     public Bounds RoadPieceSize;
     public int RoadLength => _roadLength;
@@ -37,11 +37,13 @@ public class GameplayElements : MonoSingleton<GameplayElements>
         _gop = new GameplayObjectPool();
     }
 
+    //mediates between gameLoop and specific manager
     public void CreateLevelRoad()
     {
         _roadController.CreateLevelRoad();
     }
 
+    //mediates between gameLoop and specific manager
     public void CreateObstacles()
     {
         _obstacleController.CreateLevelObstacles();
@@ -52,6 +54,7 @@ public class GameplayElements : MonoSingleton<GameplayElements>
         _roadController.AddObstacleToRoad(obstacle, roadPiece, pos);
     }
 
+    //mediates between road and obstacle managers
     public void RoadPulled(bool hadObstacle)
     {
         _obstacleController.RoadPulled(hadObstacle);

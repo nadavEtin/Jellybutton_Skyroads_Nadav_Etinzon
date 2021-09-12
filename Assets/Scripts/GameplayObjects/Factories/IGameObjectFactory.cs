@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCollisionParams : BaseEventParams
+public interface IGameObjectFactory
 {
-    
+    GameObject Create();
 }

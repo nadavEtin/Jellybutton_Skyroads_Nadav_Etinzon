@@ -6,11 +6,19 @@ using UnityEngine.UI;
 
 public class UIManager : MonoSingleton<UIManager>
 {
+    #region Const Strings
+
     private const string GAME_START_MESSAGE = "Press any key to start playing";
     private const string NEW_HIGH_SCORE_MESSAGE = "\nCongratulations, you broke your high score!";
 
+    #endregion
+
+    #region Editor
+
     [SerializeField] private TextMeshProUGUI _titleTxt, _timeTxt, _obstacleTxt, _scoreTxt, _highScoreTxt;
     [SerializeField] private Button _restartBtn, _quitBtn;
+
+    #endregion
 
     protected override UIManager ProvideInstance()
     {
@@ -24,13 +32,13 @@ public class UIManager : MonoSingleton<UIManager>
         _restartBtn.gameObject.SetActive(false);
         _quitBtn.gameObject.SetActive(false);
         _titleTxt.gameObject.SetActive(true);
-        EventBus.Instance.Subscribe(GameplayEventType.StartGame, StartGame);
+        EventBus.Instance.Subscribe(GameplayEventType.StartGame, StartGameUIM);
         SetTitleText(GAME_START_MESSAGE);
     }
 
     private void OnDestroy()
     {
-        EventBus.Instance.Unsubscribe(GameplayEventType.StartGame, StartGame);
+        EventBus.Instance.Unsubscribe(GameplayEventType.StartGame, StartGameUIM);
     }
 
     #endregion
@@ -82,7 +90,7 @@ public class UIManager : MonoSingleton<UIManager>
             _titleTxt.text += NEW_HIGH_SCORE_MESSAGE;
     }
 
-    private void StartGame(BaseEventParams par)
+    private void StartGameUIM(BaseEventParams par)
     {
         _titleTxt.gameObject.SetActive(false);
     }

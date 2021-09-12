@@ -18,10 +18,10 @@ public class DifficultyManager
 
     public DifficultyManager()
     {
-        EventBus.Instance.Subscribe(GameplayEventType.IncreaseDifficulty, IncreaseDifficulty);
+        EventBus.Instance.Subscribe(GameplayEventType.IncreaseDifficulty, IncreaseDifficultyDM);
     }
 
-    private void IncreaseDifficulty(BaseEventParams par)
+    private void IncreaseDifficultyDM(BaseEventParams par)
     {
         _currentDifficultyStage++;
     }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SimpleRoadFactory : RoadBaseFactory
+public class SimpleRoadFactory : GameObjectBaseFactory
 {
     #region Constants
 
@@ -10,7 +10,7 @@ public class SimpleRoadFactory : RoadBaseFactory
 
     #endregion
 
-    #region Fields
+    #region Private Fields
 
     private RoadParams _roadPrefabRef;
 
@@ -23,10 +23,10 @@ public class SimpleRoadFactory : RoadBaseFactory
         _roadPrefabRef = Resources.Load<RoadParams>(ROADS_RESOURCE_NAME);
     }
 
-    public override IRoad Create()
+    public override GameObject Create()
     {
         var road = (GameObject)Object.Instantiate(_roadPrefabRef.SingleRoadPrefab);
-        return road.GetComponent<SimpleRoad>();
+        return road;
     }
 
     #endregion

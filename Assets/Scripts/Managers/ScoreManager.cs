@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class ScoreManager : IStart
 {
+    #region Const Strings
+
     private const string SCORE_CONFIG_RESOURCE_NAME = "ScriptableObjects/ScoreConfig";
     private const string HIGH_SCORE_DATA_NAME = "HighScore";
+
+    #endregion
 
     #region Private Variables
 
@@ -17,18 +21,7 @@ public class ScoreManager : IStart
 
     #region Methods
 
-    private void GameOver(BaseEventParams par)
-    {
-        if(_newHighScore)
-            PlayerPrefsService.Instance.SavePrimitive(HIGH_SCORE_DATA_NAME, _highScore);
-        UIManager.Instance.GameOver(_newHighScore);
-    }
-
-    private void UpdateScoreDisplay()
-    {
-        UIManager.Instance.SetScoreText(_currentScore.ToString());
-    }
-
+    //resets vars after player restarts the game
     private void ResetVariables()
     {
         _currentScore = 0;
@@ -39,7 +32,7 @@ public class ScoreManager : IStart
         UIManager.Instance.SetHighScoreText(_highScore.ToString());
     }
 
-    private void BoostClicked(BaseEventParams par)
+    private void BoostClickedSM(BaseEventParams par)
     {
         var p = (BoostParams)par;
         _boostIsActive = p.BoostIsOn;
@@ -53,8 +46,8 @@ public class ScoreManager : IStart
     public ScoreManager()
     {
         _scoreConfig = Resources.Load<ScoreConfig>(SCORE_CONFIG_RESOURCE_NAME);
-        EventBus.Instance.Subscribe(GameplayEventType.GameOver, GameOver);
-        EventBus.Instance.Subscribe(GameplayEventType.BoostClicked, BoostClicked);
+        EventBus.Instance.Subscribe(GameplayEventType.GameOver, GameOverSM);
+        EventBus.Instance.Subscribe(GameplayEventType.BoostClicked, BoostClickedSM);
     }
 
     public void UpdateScore(int secondsPassed)
@@ -67,6 +60,8 @@ public class ScoreManager : IStart
 
         _currentScore += scoreToAdd;
         UpdateScoreDisplay();
+
+        //new high score achieved
         if (_currentScore > _highScore)
         {
             if (_newHighScore == false)
@@ -76,6 +71,7 @@ public class ScoreManager : IStart
         }
     }
 
+    //add score for passing an obstacle
     public void UpdateObstaclesPassed(int amntPassed)
     {
         _obstaclesPassed += amntPassed;
@@ -88,6 +84,18 @@ public class ScoreManager : IStart
     {
         _highScore = score;
         UIManager.Instance.SetHighScoreText(_highScore.ToString());
+    }
+
+    private void GameOverSM(BaseEventParams par)
+    {
+        if (_newHighScore)
+            PlayerPrefsService.Instance.SavePrimitive(HIGH_SCORE_DATA_NAME, _highScore);
+        UIManager.Instance.GameOver(_newHighScore);
+    }
+
+    private void UpdateScoreDisplay()
+    {
+        UIManager.Instance.SetScoreText(_currentScore.ToString());
     }
 
     #endregion

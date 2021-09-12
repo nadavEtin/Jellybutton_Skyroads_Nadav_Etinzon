@@ -4,5 +4,5 @@ using UnityEngine;
 
 public abstract class BaseDataObject
 {
-    
+    //base class for saving non-primitive data objects 
 }

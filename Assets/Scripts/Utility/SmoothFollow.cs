@@ -15,17 +15,17 @@ public class SmoothFollow : MonoBehaviour
 
     private void Start()
     {
-        EventBus.Instance.Subscribe(GameplayEventType.BoostClicked, BoostZoom);
+        EventBus.Instance.Subscribe(GameplayEventType.BoostClicked, BoostZoomSF);
         _curDistance = _regDistance;
         _curHeight = _regHeight;
     }
 
     private void OnDestroy()
     {
-        EventBus.Instance.Unsubscribe(GameplayEventType.BoostClicked, BoostZoom);
+        EventBus.Instance.Unsubscribe(GameplayEventType.BoostClicked, BoostZoomSF);
     }
 
-    private void BoostZoom(BaseEventParams par)
+    private void BoostZoomSF(BaseEventParams par)
     {
         var boostParam = (BoostParams)par;
         if(boostParam.BoostIsOn)

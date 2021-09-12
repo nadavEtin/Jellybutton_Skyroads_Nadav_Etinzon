@@ -29,18 +29,17 @@ public class PlayerShip : MonoBehaviour, IPlayer
 
     private void Awake()
     {
-        EventBus.Instance.Subscribe(GameplayEventType.StartGame, StartGame);
+        EventBus.Instance.Subscribe(GameplayEventType.StartGame, StartGamePS);
     }
 
     private void FixedUpdate()
     {
-        //TODO: start moving only after the game is finished setting up, send an event with the road width
         MovePlayer();
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == OBSTACLE_TAG)
+        if (collision.gameObject.CompareTag(OBSTACLE_TAG))
             GameOver();
     }
 
@@ -54,8 +53,9 @@ public class PlayerShip : MonoBehaviour, IPlayer
         gameObject.SetActive(false);
     }
 
-    private void StartGame(BaseEventParams par)
+    private void StartGamePS(BaseEventParams par)
     {
+        //set the borders of player movement based on road size
         var roadWidth = GameplayElements.Instance.RoadPieceSize;
         _leftRoadEdge = roadWidth.min.x * 0.9f;
         _rightRoadEdge = roadWidth.max.x * 0.9f;
@@ -82,6 +82,7 @@ public class PlayerShip : MonoBehaviour, IPlayer
 
     private void ShipRotationReset()
     {
+        //is applied when theres no player movement input
         _rotatingTransform.localRotation = Quaternion.Slerp(_rotatingTransform.localRotation, Quaternion.Euler(0, 0, 0), _rotationSpeed * Time.deltaTime);
         if (_rotatingTransform.localRotation.z < 0.1f)
             _angleFactor = 0;

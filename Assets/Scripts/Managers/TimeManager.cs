@@ -12,7 +12,6 @@ public class TimeManager : MonoSingleton<TimeManager>
 
     private int _gameTimeCount;
     private bool _gameActive;
-    //private int _currentDifficultyStage;
 
     #region Public Properties
 
@@ -30,8 +29,8 @@ public class TimeManager : MonoSingleton<TimeManager>
 
     private void OnDestroy()
     {
-        EventBus.Instance.Unsubscribe(GameplayEventType.StartGame, GameStart);
-        EventBus.Instance.Unsubscribe(GameplayEventType.GameOver, GameOver);
+        EventBus.Instance.Unsubscribe(GameplayEventType.StartGame, StartGameTM);
+        EventBus.Instance.Unsubscribe(GameplayEventType.GameOver, GameOverTM);
     }
 
     #endregion
@@ -40,25 +39,29 @@ public class TimeManager : MonoSingleton<TimeManager>
 
     private void SubscribeToEvents()
     {
-        EventBus.Instance.Subscribe(GameplayEventType.StartGame, GameStart);
-        EventBus.Instance.Subscribe(GameplayEventType.GameOver, GameOver);
+        EventBus.Instance.Subscribe(GameplayEventType.StartGame, StartGameTM);
+        EventBus.Instance.Subscribe(GameplayEventType.GameOver, GameOverTM);
     }
 
-    private void GameStart(BaseEventParams par)
+    private void StartGameTM(BaseEventParams par)
     {
-        StartCoroutine(CountGameTime());
+        InfrastructureServices.CoroutineService.RunCoroutine(CountGameTime());
         DifficultyPeriodStart();
         GameTimerStart();
     }
 
+    //creates awaiter for new difficulty period
     private void DifficultyPeriodStart()
     {
         InfrastructureServices.AwaitService.WaitFor(_difficultyIncreasePeriod).OnEnd(DifficultyPeriodEnd);
     }
 
+    //called when current difficulty period ends
     private void DifficultyPeriodEnd()
     {
         EventBus.Instance.Publish(GameplayEventType.IncreaseDifficulty, BaseEventParams.Empty);
+
+        //if the game is still active, start next difficulty period
         if (_gameActive)
             DifficultyPeriodStart();
     }
@@ -66,7 +69,7 @@ public class TimeManager : MonoSingleton<TimeManager>
     private void GameTimerStart()
     {
         _gameActive = true;
-        StartCoroutine(CountGameTime());
+        InfrastructureServices.CoroutineService.RunCoroutine(CountGameTime());
     }
 
     private IEnumerator CountGameTime()
@@ -80,7 +83,7 @@ public class TimeManager : MonoSingleton<TimeManager>
         }
     }
 
-    private void GameOver(BaseEventParams par)
+    private void GameOverTM(BaseEventParams par)
     {
         _gameActive = false;
         StopAllCoroutines();

@@ -1,7 +1,4 @@
 ﻿public class AsteroidObstacle : BaseObstacle
 {
-    private void Awake()
-    {
-        _type = PooledObjectType.Obstacle;
-    }
+    //child class prepared for specific code of asteroidObstacle in the future
 }

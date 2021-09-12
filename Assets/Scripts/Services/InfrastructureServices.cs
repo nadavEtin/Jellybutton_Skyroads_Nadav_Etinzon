@@ -4,6 +4,8 @@ using UnityEngine;
 
 public static class InfrastructureServices
 {
+    //provides various services to the rest of the project
+
     #region Services
 
     private static UnityCoreService _unityCoreService;
@@ -18,7 +20,7 @@ public static class InfrastructureServices
 
     #endregion
 
-    #region Properties
+    #region Public Properties
 
     public static IUnityCoreService UnityCoreService => _unityCoreService;
     public static IWaitService AwaitService => _awaitService;
@@ -30,9 +32,13 @@ public static class InfrastructureServices
 
     public static void Initialize()
     {
+        var serviceContainer = new GameObject("Services");
         _awaitService = CreateAwaitService();
+        _awaitService.transform.SetParent(serviceContainer.transform);
         _coroutineService = CreateCoroutineService();
+        _coroutineService.transform.SetParent(serviceContainer.transform);
         _unityCoreService = CreateUnityCore();
+        _unityCoreService.transform.SetParent(serviceContainer.transform);
         _inputMan = new InputManager();
         _unityCoreService.RegisterToUpdate(_inputMan);
 
